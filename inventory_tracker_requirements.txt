@@ -1,0 +1,73 @@
+Basic Inventory Tracker – Requirements
+
+Core Features:
+1. User authentication (register, login, logout)
+2. CRUD for Items (add, edit, delete, view)
+3. CRUD for Categories (add, edit, delete, view)
+4. Dashboard with inventory summary (total items, categories)
+5. Low stock alert (e.g., items with quantity below a threshold)
+6. Filter/search items by name or category
+7. Recently added items list
+8. Static page: Inventory management tips
+
+Entities:
+- User
+- Item (name, description, quantity, category, added date, etc.)
+- Category (name, description)
+
+Database Requirements:
+- Use MySQL as the database engine
+- Use Laravel migrations for schema management
+
+Schema & Relationships:
+1. users
+   - id (PK, auto-increment)
+   - name (string)
+   - email (string, unique)
+   - password (string, hashed)
+   - timestamps (created_at, updated_at)
+
+2. categories
+   - id (PK, auto-increment)
+   - name (string, unique)
+   - description (text, nullable)
+   - timestamps (created_at, updated_at)
+
+3. items
+   - id (PK, auto-increment)
+   - name (string)
+   - description (text, nullable)
+   - quantity (integer, default: 0)
+   - category_id (FK to categories.id, on delete set null)
+   - user_id (FK to users.id, owner/creator)
+   - added_date (date)
+   - timestamps (created_at, updated_at)
+
+Relationships:
+- Each item belongs to one category (category_id)
+- Each item belongs to one user (user_id)
+- Each category can have many items
+- Each user can have many items
+
+Sample Dummy Data Suggestions:
+- 2-3 users
+- 3-5 categories (e.g., Electronics, Stationery, Food)
+- 10-15 items with various categories and owners
+
+Pages:
+- Login/Register
+- Dashboard
+- Items list (with search/filter)
+- Item detail
+- Add/Edit item
+- Categories list
+- Add/Edit category
+- Static tips page
+
+Other Requirements:
+- Responsive design (mobile-friendly)
+- Use Bootstrap for UI styling
+- Basic validation (required fields, positive quantity, etc.)
+- Flash messages for actions (success/error)
+- Use Laravel’s built-in authentication
+- Use MySQL as the database

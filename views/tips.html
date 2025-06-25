@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Inventory Management Tips - Inventory Tracker</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+      <div class="container">
+        <a class="navbar-brand" href="dashboard.html"
+          ><i class="bi bi-box-seam"></i> Inventory Tracker</a
+        >
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav me-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="dashboard.html"
+                ><i class="bi bi-speedometer2"></i> Dashboard</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="items.html"
+                ><i class="bi bi-box"></i> Items</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="categories.html"
+                ><i class="bi bi-tags"></i> Categories</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="tips.html"
+                ><i class="bi bi-lightbulb"></i> Tips</a
+              >
+            </li>
+          </ul>
+          <ul class="navbar-nav">
+            <li class="nav-item dropdown">
+              <a
+                class="nav-link dropdown-toggle"
+                href="#"
+                role="button"
+                data-bs-toggle="dropdown"
+              >
+                <i class="bi bi-person-circle"></i> John Doe
+              </a>
+              <ul class="dropdown-menu">
+                <li>
+                  <a class="dropdown-item" href="#"
+                    ><i class="bi bi-person"></i> Profile</a
+                  >
+                </li>
+                <li><hr class="dropdown-divider" /></li>
+                <li>
+                  <a class="dropdown-item" href="login.html"
+                    ><i class="bi bi-box-arrow-right"></i> Logout</a
+                  >
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container my-4">
+      <div class="row">
+        <div class="col-12">
+          <h1 class="mb-4">
+            <i class="bi bi-lightbulb text-warning"></i> Inventory Management
+            Tips
+          </h1>
+          <p class="lead text-muted">
+            Learn best practices for effective inventory management and
+            organization.
+          </p>
+        </div>
+      </div>
+
+      <!-- Tips Sections -->
+      <div class="row">
+        <div class="col-lg-8">
+          <!-- Getting Started -->
+          <div class="card mb-4">
+            <div class="card-header bg-primary text-white">
+              <h5 class="mb-0">
+                <i class="bi bi-play-circle"></i> Getting Started
+              </h5>
+            </div>
+            <div class="card-body">
+              <div class="row">
+                <div class="col-md-6">
+                  <h6>
+                    <i class="bi bi-1-circle text-primary"></i> Set Up
+                    Categories
+                  </h6>
+                  <p class="small text-muted">
+                    Create meaningful categories that reflect your business
+                    needs. Common categories include:
+                  </p>
+                  <ul class="small">
+                    <li>Electronics</li>
+                    <li>Furniture</li>
+                    <li>Stationery</li>
+                    <li>Food & Beverages</li>
+                  </ul>
+                </div>
+                <div class="col-md-6">
+                  <h6>
+                    <i class="bi bi-2-circle text-primary"></i> Define Stock
+                    Levels
+                  </h6>
+                  <p class="small text-muted">
+                    Establish minimum and maximum stock levels for each item to
+                    avoid stockouts and overstocking.
+                  </p>
+                  <div class="alert alert-info small">
+                    <i class="bi bi-info-circle"></i> <strong>Tip:</strong> Use
+                    the 80/20 rule - 20% of items typically account for 80% of
+                    sales.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Best Practices -->
+          <div class="card mb-4">
+            <div class="card-header bg-success text-white">
+              <h5 class="mb-0"><i class="bi bi-star"></i> Best Practices</h5>
+            </div>
+            <div class="card-body">
+              <div class="accordion" id="bestPracticesAccordion">
+                <div class="accordion-item">
+                  <h2 class="accordion-header" id="headingOne">
+                    <button
+                      class="accordion-button"
+                      type="button"
+                      data-bs-toggle="collapse"
+                      data-bs-target="#collapseOne"
+                    >
+                      <i class="bi bi-clock-history me-2"></i> Regular Audits
+                    </button>
+                  </h2>
+                  <div
+                    id="collapseOne"
+                    class="accordion-collapse collapse show"
+                    data-bs-parent="#bestPracticesAccordion"
+                  >
+                    <div class="accordion-body">
+                      <p>
+                        Conduct regular physical inventory audits to ensure
+                        accuracy:
+                      </p>
+                      <ul>
+                        <li>
+                          <strong>Weekly:</strong> Check high-value or
+                          fast-moving items
+                        </li>
+                        <li>
+                          <strong>Monthly:</strong> Audit 25% of total inventory
+                        </li>
+                        <li>
+                          <strong>Quarterly:</strong> Complete inventory count
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+                <div class="accordion-item">
+                  <h2 class="accordion-header" id="headingTwo">
+                    <button
+                      class="accordion-button collapsed"
+                      type="button"
+                      data-bs-toggle="collapse"
+                      data-bs-target="#collapseTwo"
+                    >
+                      <i class="bi bi-diagram-3 me-2"></i> Organization Systems
+                    </button>
+                  </h2>
+                  <div
+                    id="collapseTwo"
+                    class="accordion-collapse collapse"
+                    data-bs-parent="#bestPracticesAccordion"
+                  >
+                    <div class="accordion-body">
+                      <p>Implement systematic organization methods:</p>
+                      <ul>
+                        <li>
+                          <strong>ABC Analysis:</strong> Categorize items by
+                          value and importance
+                        </li>
+                        <li>
+                          <strong>FIFO (First In, First Out):</strong> For
+                          perishable items
+                        </li>
+                        <li>
+                          <strong>Location Coding:</strong> Assign specific
+                          locations to items
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+                <div class="accordion-item">
+                  <h2 class="accordion-header" id="headingThree">
+                    <button
+                      class="accordion-button collapsed"
+                      type="button"
+                      data-bs-toggle="collapse"
+                      data-bs-target="#collapseThree"
+                    >
+                      <i class="bi bi-graph-up me-2"></i> Data Analysis
+                    </button>
+                  </h2>
+                  <div
+                    id="collapseThree"
+                    class="accordion-collapse collapse"
+                    data-bs-parent="#bestPracticesAccordion"
+                  >
+                    <div class="accordion-body">
+                      <p>Use data to make informed decisions:</p>
+                      <ul>
+                        <li>Track inventory turnover rates</li>
+                        <li>Monitor seasonal trends</li>
+                        <li>Analyze slow-moving items</li>
+                        <li>Review supplier performance</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Common Mistakes -->
+          <div class="card mb-4">
+            <div class="card-header bg-warning text-dark">
+              <h5 class="mb-0">
+                <i class="bi bi-exclamation-triangle"></i> Common Mistakes to
+                Avoid
+              </h5>
+            </div>
+            <div class="card-body">
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="list-group list-group-flush">
+                    <div class="list-group-item border-0 px-0">
+                      <h6 class="text-danger">
+                        <i class="bi bi-x-circle"></i> Overstocking
+                      </h6>
+                      <small class="text-muted"
+                        >Tying up cash in excess inventory</small
+                      >
+                    </div>
+                    <div class="list-group-item border-0 px-0">
+                      <h6 class="text-danger">
+                        <i class="bi bi-x-circle"></i> Poor Record Keeping
+                      </h6>
+                      <small class="text-muted"
+                        >Inaccurate or outdated inventory data</small
+                      >
+                    </div>
+                    <div class="list-group-item border-0 px-0">
+                      <h6 class="text-danger">
+                        <i class="bi bi-x-circle"></i> Ignoring Trends
+                      </h6>
+                      <small class="text-muted"
+                        >Not adjusting for seasonal variations</small
+                      >
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="list-group list-group-flush">
+                    <div class="list-group-item border-0 px-0">
+                      <h6 class="text-danger">
+                        <i class="bi bi-x-circle"></i> Manual Processes
+                      </h6>
+                      <small class="text-muted"
+                        >Relying on spreadsheets instead of systems</small
+                      >
+                    </div>
+                    <div class="list-group-item border-0 px-0">
+                      <h6 class="text-danger">
+                        <i class="bi bi-x-circle"></i> No Safety Stock
+                      </h6>
+                      <small class="text-muted"
+                        >Not maintaining buffer inventory</small
+                      >
+                    </div>
+                    <div class="list-group-item border-0 px-0">
+                      <h6 class="text-danger">
+                        <i class="bi bi-x-circle"></i> Poor Supplier Relations
+                      </h6>
+                      <small class="text-muted"
+                        >Not maintaining good vendor relationships</small
+                      >
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Key Metrics -->
+          <div class="card mb-4">
+            <div class="card-header bg-info text-white">
+              <h5 class="mb-0">
+                <i class="bi bi-bar-chart"></i> Key Performance Indicators
+              </h5>
+            </div>
+            <div class="card-body">
+              <div class="row">
+                <div class="col-md-6">
+                  <h6><i class="bi bi-speedometer2"></i> Inventory Turnover</h6>
+                  <p class="small text-muted">
+                    Measures how quickly inventory is sold and replaced over a
+                    period.
+                  </p>
+                  <div class="bg-light p-2 rounded">
+                    <code
+                      >Turnover = Cost of Goods Sold / Average Inventory</code
+                    >
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <h6>
+                    <i class="bi bi-calendar3"></i> Days Sales Outstanding
+                  </h6>
+                  <p class="small text-muted">
+                    Average number of days it takes to sell inventory.
+                  </p>
+                  <div class="bg-light p-2 rounded">
+                    <code>DSO = (Average Inventory / COGS) × 365</code>
+                  </div>
+                </div>
+              </div>
+              <hr />
+              <div class="row">
+                <div class="col-md-6">
+                  <h6><i class="bi bi-percent"></i> Stock Accuracy</h6>
+                  <p class="small text-muted">
+                    Percentage of items that match between physical and system
+                    counts.
+                  </p>
+                  <div class="bg-light p-2 rounded">
+                    <code>Accuracy = (Correct Items / Total Items) × 100</code>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <h6><i class="bi bi-arrow-down-circle"></i> Stockout Rate</h6>
+                  <p class="small text-muted">
+                    Percentage of time items are out of stock.
+                  </p>
+                  <div class="bg-light p-2 rounded">
+                    <code
+                      >Stockout Rate = (Stockout Days / Total Days) × 100</code
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sidebar -->
+        <div class="col-lg-4">
+          <!-- Quick Actions -->
+          <div class="card mb-4">
+            <div class="card-header">
+              <h6><i class="bi bi-lightning"></i> Quick Actions</h6>
+            </div>
+            <div class="card-body">
+              <div class="d-grid gap-2">
+                <a href="add-item.html" class="btn btn-primary btn-sm">
+                  <i class="bi bi-plus-circle"></i> Add New Item
+                </a>
+                <a href="categories.html" class="btn btn-success btn-sm">
+                  <i class="bi bi-tags"></i> Manage Categories
+                </a>
+                <a
+                  href="items.html?filter=low_stock"
+                  class="btn btn-warning btn-sm"
+                >
+                  <i class="bi bi-exclamation-triangle"></i> Check Low Stock
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Useful Resources -->
+          <div class="card mb-4">
+            <div class="card-header">
+              <h6><i class="bi bi-book"></i> Useful Resources</h6>
+            </div>
+            <div class="card-body">
+              <div class="list-group list-group-flush">
+                <a href="#" class="list-group-item list-group-item-action">
+                  <i class="bi bi-file-earmark-pdf"></i> Inventory Checklist
+                  (PDF)
+                </a>
+                <a href="#" class="list-group-item list-group-item-action">
+                  <i class="bi bi-calculator"></i> ROI Calculator
+                </a>
+                <a href="#" class="list-group-item list-group-item-action">
+                  <i class="bi bi-graph-up"></i> Trend Analysis Template
+                </a>
+                <a href="#" class="list-group-item list-group-item-action">
+                  <i class="bi bi-people"></i> Supplier Evaluation Form
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Contact Support -->
+          <div class="card">
+            <div class="card-header">
+              <h6><i class="bi bi-question-circle"></i> Need Help?</h6>
+            </div>
+            <div class="card-body">
+              <p class="small text-muted">
+                If you have questions about inventory management or need
+                assistance with the system, don't hesitate to reach out.
+              </p>
+              <div class="d-grid">
+                <button class="btn btn-outline-primary btn-sm">
+                  <i class="bi bi-envelope"></i> Contact Support
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>

@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Item Details - Inventory Tracker</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+      <div class="container">
+        <a class="navbar-brand" href="dashboard.html"
+          ><i class="bi bi-box-seam"></i> Inventory Tracker</a
+        >
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav me-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="dashboard.html"
+                ><i class="bi bi-speedometer2"></i> Dashboard</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="items.html"
+                ><i class="bi bi-box"></i> Items</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="categories.html"
+                ><i class="bi bi-tags"></i> Categories</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="tips.html"
+                ><i class="bi bi-lightbulb"></i> Tips</a
+              >
+            </li>
+          </ul>
+          <ul class="navbar-nav">
+            <li class="nav-item dropdown">
+              <a
+                class="nav-link dropdown-toggle"
+                href="#"
+                role="button"
+                data-bs-toggle="dropdown"
+              >
+                <i class="bi bi-person-circle"></i> John Doe
+              </a>
+              <ul class="dropdown-menu">
+                <li>
+                  <a class="dropdown-item" href="#"
+                    ><i class="bi bi-person"></i> Profile</a
+                  >
+                </li>
+                <li><hr class="dropdown-divider" /></li>
+                <li>
+                  <a class="dropdown-item" href="login.html"
+                    ><i class="bi bi-box-arrow-right"></i> Logout</a
+                  >
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container my-4">
+      <div class="row">
+        <div class="col-12">
+          <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1><i class="bi bi-eye"></i> Item Details</h1>
+            <div>
+              <a href="edit-item.html" class="btn btn-warning me-2">
+                <i class="bi bi-pencil"></i> Edit Item
+              </a>
+              <a href="items.html" class="btn btn-secondary">
+                <i class="bi bi-arrow-left"></i> Back to Items
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-8">
+          <div class="card">
+            <div class="card-header">
+              <h5><i class="bi bi-info-circle"></i> Item Information</h5>
+            </div>
+            <div class="card-body">
+              <div class="row">
+                <div class="col-md-6">
+                  <table class="table table-borderless">
+                    <tr>
+                      <td class="fw-bold">Name:</td>
+                      <td>MacBook Pro</td>
+                    </tr>
+                    <tr>
+                      <td class="fw-bold">Category:</td>
+                      <td><span class="badge bg-primary">Electronics</span></td>
+                    </tr>
+                    <tr>
+                      <td class="fw-bold">Quantity:</td>
+                      <td><span class="fw-bold fs-5 text-success">12</span></td>
+                    </tr>
+                    <tr>
+                      <td class="fw-bold">Status:</td>
+                      <td><span class="badge bg-success">In Stock</span></td>
+                    </tr>
+                  </table>
+                </div>
+                <div class="col-md-6">
+                  <table class="table table-borderless">
+                    <tr>
+                      <td class="fw-bold">Added Date:</td>
+                      <td>June 20, 2025</td>
+                    </tr>
+                    <tr>
+                      <td class="fw-bold">Added By:</td>
+                      <td>John Doe</td>
+                    </tr>
+                    <tr>
+                      <td class="fw-bold">Last Updated:</td>
+                      <td>June 22, 2025</td>
+                    </tr>
+                    <tr>
+                      <td class="fw-bold">Item ID:</td>
+                      <td><code>#ITM001</code></td>
+                    </tr>
+                  </table>
+                </div>
+              </div>
+
+              <hr />
+
+              <div class="row">
+                <div class="col-12">
+                  <h6 class="fw-bold">Description:</h6>
+                  <p class="text-muted">
+                    High-performance laptop for professional work. Features
+                    include M2 chip, 16GB RAM, and 512GB SSD storage. Perfect
+                    for development, design, and multimedia tasks.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <div class="card">
+            <div class="card-header">
+              <h5><i class="bi bi-activity"></i> Quick Actions</h5>
+            </div>
+            <div class="card-body">
+              <div class="d-grid gap-2">
+                <button
+                  class="btn btn-success"
+                  onclick="showUpdateQuantityModal()"
+                >
+                  <i class="bi bi-plus-minus"></i> Update Quantity
+                </button>
+                <a href="edit-item.html" class="btn btn-warning">
+                  <i class="bi bi-pencil"></i> Edit Details
+                </a>
+                <button class="btn btn-danger" onclick="confirmDelete()">
+                  <i class="bi bi-trash"></i> Delete Item
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="card mt-3">
+            <div class="card-header">
+              <h6><i class="bi bi-graph-up"></i> Stock Status</h6>
+            </div>
+            <div class="card-body">
+              <div class="progress mb-3">
+                <div
+                  class="progress-bar bg-success"
+                  role="progressbar"
+                  style="width: 80%"
+                  aria-valuenow="80"
+                  aria-valuemin="0"
+                  aria-valuemax="100"
+                ></div>
+              </div>
+              <small class="text-muted"
+                >Current stock level: 80% (12 items)</small
+              >
+
+              <hr />
+
+              <div class="d-flex justify-content-between">
+                <small class="text-muted">Min. Stock Level:</small>
+                <small class="fw-bold">5</small>
+              </div>
+              <div class="d-flex justify-content-between">
+                <small class="text-muted">Max. Stock Level:</small>
+                <small class="fw-bold">15</small>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Update Quantity Modal -->
+    <div class="modal fade" id="updateQuantityModal" tabindex="-1">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Update Quantity</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form>
+              <div class="mb-3">
+                <label for="currentQuantity" class="form-label"
+                  >Current Quantity</label
+                >
+                <input
+                  type="number"
+                  class="form-control"
+                  id="currentQuantity"
+                  value="12"
+                  readonly
+                />
+              </div>
+              <div class="mb-3">
+                <label for="newQuantity" class="form-label">New Quantity</label>
+                <input
+                  type="number"
+                  class="form-control"
+                  id="newQuantity"
+                  min="0"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label for="updateReason" class="form-label"
+                  >Reason for Update</label
+                >
+                <select class="form-select" id="updateReason">
+                  <option value="stock_in">Stock In</option>
+                  <option value="stock_out">Stock Out</option>
+                  <option value="adjustment">Inventory Adjustment</option>
+                  <option value="damaged">Damaged Items</option>
+                </select>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Cancel
+            </button>
+            <button type="button" class="btn btn-success">
+              Update Quantity
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div class="modal fade" id="deleteModal" tabindex="-1">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Confirm Delete</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+            ></button>
+          </div>
+          <div class="modal-body">
+            Are you sure you want to delete "MacBook Pro"? This action cannot be
+            undone.
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Cancel
+            </button>
+            <button type="button" class="btn btn-danger">Delete</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      function showUpdateQuantityModal() {
+        const modal = new bootstrap.Modal(
+          document.getElementById("updateQuantityModal")
+        );
+        modal.show();
+      }
+
+      function confirmDelete() {
+        const modal = new bootstrap.Modal(
+          document.getElementById("deleteModal")
+        );
+        modal.show();
+      }
+    </script>
+  </body>
+</html>

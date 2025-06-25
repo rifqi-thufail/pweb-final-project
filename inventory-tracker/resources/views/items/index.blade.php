@@ -1,0 +1,208 @@
+@extends('layouts.inventory')
+
+@section('title', 'Items - Inventory Tracker')
+
+@section('content')
+<div class="container my-4">
+    <div class="row">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h1><i class="bi bi-box"></i> Items</h1>
+                <a href="{{ route('items.create') }}" class="btn btn-primary">
+                    <i class="bi bi-plus-circle"></i> Add New Item
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Search and Filter -->
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <div class="input-group">
+                <span class="input-group-text"><i class="bi bi-search"></i></span>
+                <input type="text" class="form-control" placeholder="Search items..." 
+                       id="searchInput" value="{{ request('search') }}">
+            </div>
+        </div>
+        <div class="col-md-3">
+            <select class="form-select" id="categoryFilter">
+                <option value="">All Categories</option>
+                @foreach($categories as $category)
+                    <option value="{{ $category->id }}" {{ request('category') == $category->id ? 'selected' : '' }}>
+                        {{ $category->name }}
+                    </option>
+                @endforeach
+            </select>
+        </div>
+        <div class="col-md-3">
+            <select class="form-select" id="stockFilter">
+                <option value="">All Stock Levels</option>
+                <option value="in_stock" {{ request('filter') == 'in_stock' ? 'selected' : '' }}>In Stock</option>
+                <option value="low_stock" {{ request('filter') == 'low_stock' ? 'selected' : '' }}>Low Stock</option>
+                <option value="out_of_stock" {{ request('filter') == 'out_of_stock' ? 'selected' : '' }}>Out of Stock</option>
+            </select>
+        </div>
+    </div>
+
+    <!-- Items Table -->
+    <div class="card">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Name</th>
+                            <th>Category</th>
+                            <th>Quantity</th>
+                            <th>Status</th>
+                            <th>Added Date</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse($items as $item)
+                            <tr>
+                                <td>
+                                    <div class="d-flex">
+                                        <div>
+                                            <h6 class="mb-1">{{ $item->name }}</h6>
+                                            @if($item->description)
+                                                <small class="text-muted">{{ Str::limit($item->description, 50) }}</small>
+                                            @endif
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="badge bg-{{ $item->category_color ?? 'secondary' }}">
+                                        {{ $item->category_name }}
+                                    </span>
+                                </td>
+                                <td>
+                                    <span class="fw-bold {{ $item->quantity == 0 ? 'text-danger' : ($item->quantity <= 5 ? 'text-warning' : '') }}">
+                                        {{ $item->quantity }}
+                                    </span>
+                                </td>
+                                <td>
+                                    @if($item->quantity == 0)
+                                        <span class="badge bg-danger">Out of Stock</span>
+                                    @elseif($item->quantity <= 5)
+                                        <span class="badge bg-warning">Low Stock</span>
+                                    @else
+                                        <span class="badge bg-success">In Stock</span>
+                                    @endif
+                                </td>
+                                <td>{{ $item->added_date->format('Y-m-d') }}</td>
+                                <td>
+                                    <div class="btn-group btn-group-sm">
+                                        <a href="{{ route('items.show', $item->id) }}" class="btn btn-outline-info" title="View">
+                                            <i class="bi bi-eye"></i>
+                                        </a>
+                                        <a href="{{ route('items.edit', $item->id) }}" class="btn btn-outline-warning" title="Edit">
+                                            <i class="bi bi-pencil"></i>
+                                        </a>
+                                        <button class="btn btn-outline-danger" title="Delete" 
+                                                onclick="confirmDelete({{ $item->id }}, '{{ $item->name }}')">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="6" class="text-center py-4">
+                                    <div class="text-muted">
+                                        <i class="bi bi-box fs-1 d-block mb-2"></i>
+                                        <p class="mb-0">No items found</p>
+                                        <a href="{{ route('items.create') }}" class="btn btn-primary btn-sm mt-2">
+                                            <i class="bi bi-plus-circle"></i> Add First Item
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Pagination -->
+            @if($items->hasPages())
+                <div class="d-flex justify-content-center">
+                    {{ $items->appends(request()->query())->links() }}
+                </div>
+            @endif
+        </div>
+    </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Confirm Delete</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete <strong id="deleteItemName"></strong>? This action cannot be undone.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <form id="deleteForm" method="POST" style="display: inline;">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+@endsection
+
+@push('scripts')
+<script>
+    function confirmDelete(itemId, itemName) {
+        document.getElementById('deleteItemName').textContent = itemName;
+        document.getElementById('deleteForm').action = `/items/${itemId}`;
+        const deleteModal = new bootstrap.Modal(document.getElementById('deleteModal'));
+        deleteModal.show();
+    }
+
+    // Search functionality
+    document.getElementById('searchInput').addEventListener('input', function() {
+        debounce(() => {
+            filterItems();
+        }, 500)();
+    });
+
+    // Filter functionality
+    document.getElementById('categoryFilter').addEventListener('change', filterItems);
+    document.getElementById('stockFilter').addEventListener('change', filterItems);
+
+    function filterItems() {
+        const search = document.getElementById('searchInput').value;
+        const category = document.getElementById('categoryFilter').value;
+        const stock = document.getElementById('stockFilter').value;
+        
+        const params = new URLSearchParams();
+        if (search) params.append('search', search);
+        if (category) params.append('category', category);
+        if (stock) params.append('filter', stock);
+        
+        const url = new URL(window.location.href);
+        url.search = params.toString();
+        window.location.href = url.toString();
+    }
+
+    function debounce(func, wait) {
+        let timeout;
+        return function executedFunction(...args) {
+            const later = () => {
+                clearTimeout(timeout);
+                func(...args);
+            };
+            clearTimeout(timeout);
+            timeout = setTimeout(later, wait);
+        };
+    }
+</script>
+@endpush

@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Categories - Inventory Tracker</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+      <div class="container">
+        <a class="navbar-brand" href="dashboard.html"
+          ><i class="bi bi-box-seam"></i> Inventory Tracker</a
+        >
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav me-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="dashboard.html"
+                ><i class="bi bi-speedometer2"></i> Dashboard</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="items.html"
+                ><i class="bi bi-box"></i> Items</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="categories.html"
+                ><i class="bi bi-tags"></i> Categories</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="tips.html"
+                ><i class="bi bi-lightbulb"></i> Tips</a
+              >
+            </li>
+          </ul>
+          <ul class="navbar-nav">
+            <li class="nav-item dropdown">
+              <a
+                class="nav-link dropdown-toggle"
+                href="#"
+                role="button"
+                data-bs-toggle="dropdown"
+              >
+                <i class="bi bi-person-circle"></i> John Doe
+              </a>
+              <ul class="dropdown-menu">
+                <li>
+                  <a class="dropdown-item" href="#"
+                    ><i class="bi bi-person"></i> Profile</a
+                  >
+                </li>
+                <li><hr class="dropdown-divider" /></li>
+                <li>
+                  <a class="dropdown-item" href="login.html"
+                    ><i class="bi bi-box-arrow-right"></i> Logout</a
+                  >
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container my-4">
+      <div class="row">
+        <div class="col-12">
+          <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1><i class="bi bi-tags"></i> Categories</h1>
+            <button
+              class="btn btn-primary"
+              data-bs-toggle="modal"
+              data-bs-target="#addCategoryModal"
+            >
+              <i class="bi bi-plus-circle"></i> Add New Category
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Categories Grid -->
+      <div class="row">
+        <div class="col-md-6 col-lg-4 mb-4">
+          <div class="card h-100">
+            <div class="card-body">
+              <div
+                class="d-flex justify-content-between align-items-start mb-3"
+              >
+                <div>
+                  <h5 class="card-title text-primary">
+                    <i class="bi bi-laptop"></i> Electronics
+                  </h5>
+                  <p class="card-text text-muted">
+                    Electronic devices and accessories
+                  </p>
+                </div>
+                <div class="dropdown">
+                  <button
+                    class="btn btn-outline-secondary btn-sm dropdown-toggle"
+                    type="button"
+                    data-bs-toggle="dropdown"
+                  >
+                    <i class="bi bi-three-dots"></i>
+                  </button>
+                  <ul class="dropdown-menu">
+                    <li>
+                      <a
+                        class="dropdown-item"
+                        href="#"
+                        onclick="editCategory(1)"
+                        ><i class="bi bi-pencil"></i> Edit</a
+                      >
+                    </li>
+                    <li>
+                      <a
+                        class="dropdown-item text-danger"
+                        href="#"
+                        onclick="deleteCategory(1)"
+                        ><i class="bi bi-trash"></i> Delete</a
+                      >
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <div class="d-flex justify-content-between align-items-center">
+                <span class="badge bg-primary fs-6">15 items</span>
+                <a
+                  href="items.html?category=electronics"
+                  class="btn btn-sm btn-outline-primary"
+                  >View Items</a
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-lg-4 mb-4">
+          <div class="card h-100">
+            <div class="card-body">
+              <div
+                class="d-flex justify-content-between align-items-start mb-3"
+              >
+                <div>
+                  <h5 class="card-title text-success">
+                    <i class="bi bi-house"></i> Furniture
+                  </h5>
+                  <p class="card-text text-muted">
+                    Office and home furniture items
+                  </p>
+                </div>
+                <div class="dropdown">
+                  <button
+                    class="btn btn-outline-secondary btn-sm dropdown-toggle"
+                    type="button"
+                    data-bs-toggle="dropdown"
+                  >
+                    <i class="bi bi-three-dots"></i>
+                  </button>
+                  <ul class="dropdown-menu">
+                    <li>
+                      <a
+                        class="dropdown-item"
+                        href="#"
+                        onclick="editCategory(2)"
+                        ><i class="bi bi-pencil"></i> Edit</a
+                      >
+                    </li>
+                    <li>
+                      <a
+                        class="dropdown-item text-danger"
+                        href="#"
+                        onclick="deleteCategory(2)"
+                        ><i class="bi bi-trash"></i> Delete</a
+                      >
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <div class="d-flex justify-content-between align-items-center">
+                <span class="badge bg-success fs-6">8 items</span>
+                <a
+                  href="items.html?category=furniture"
+                  class="btn btn-sm btn-outline-success"
+                  >View Items</a
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-lg-4 mb-4">
+          <div class="card h-100">
+            <div class="card-body">
+              <div
+                class="d-flex justify-content-between align-items-start mb-3"
+              >
+                <div>
+                  <h5 class="card-title text-warning">
+                    <i class="bi bi-pencil"></i> Stationery
+                  </h5>
+                  <p class="card-text text-muted">
+                    Office supplies and stationery items
+                  </p>
+                </div>
+                <div class="dropdown">
+                  <button
+                    class="btn btn-outline-secondary btn-sm dropdown-toggle"
+                    type="button"
+                    data-bs-toggle="dropdown"
+                  >
+                    <i class="bi bi-three-dots"></i>
+                  </button>
+                  <ul class="dropdown-menu">
+                    <li>
+                      <a
+                        class="dropdown-item"
+                        href="#"
+                        onclick="editCategory(3)"
+                        ><i class="bi bi-pencil"></i> Edit</a
+                      >
+                    </li>
+                    <li>
+                      <a
+                        class="dropdown-item text-danger"
+                        href="#"
+                        onclick="deleteCategory(3)"
+                        ><i class="bi bi-trash"></i> Delete</a
+                      >
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <div class="d-flex justify-content-between align-items-center">
+                <span class="badge bg-warning fs-6">23 items</span>
+                <a
+                  href="items.html?category=stationery"
+                  class="btn btn-sm btn-outline-warning"
+                  >View Items</a
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-lg-4 mb-4">
+          <div class="card h-100">
+            <div class="card-body">
+              <div
+                class="d-flex justify-content-between align-items-start mb-3"
+              >
+                <div>
+                  <h5 class="card-title text-info">
+                    <i class="bi bi-cup-hot"></i> Food
+                  </h5>
+                  <p class="card-text text-muted">Food items and beverages</p>
+                </div>
+                <div class="dropdown">
+                  <button
+                    class="btn btn-outline-secondary btn-sm dropdown-toggle"
+                    type="button"
+                    data-bs-toggle="dropdown"
+                  >
+                    <i class="bi bi-three-dots"></i>
+                  </button>
+                  <ul class="dropdown-menu">
+                    <li>
+                      <a
+                        class="dropdown-item"
+                        href="#"
+                        onclick="editCategory(4)"
+                        ><i class="bi bi-pencil"></i> Edit</a
+                      >
+                    </li>
+                    <li>
+                      <a
+                        class="dropdown-item text-danger"
+                        href="#"
+                        onclick="deleteCategory(4)"
+                        ><i class="bi bi-trash"></i> Delete</a
+                      >
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <div class="d-flex justify-content-between align-items-center">
+                <span class="badge bg-info fs-6">5 items</span>
+                <a
+                  href="items.html?category=food"
+                  class="btn btn-sm btn-outline-info"
+                  >View Items</a
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-lg-4 mb-4">
+          <div class="card h-100">
+            <div class="card-body">
+              <div
+                class="d-flex justify-content-between align-items-start mb-3"
+              >
+                <div>
+                  <h5 class="card-title text-secondary">
+                    <i class="bi bi-tools"></i> Tools
+                  </h5>
+                  <p class="card-text text-muted">
+                    Hardware tools and equipment
+                  </p>
+                </div>
+                <div class="dropdown">
+                  <button
+                    class="btn btn-outline-secondary btn-sm dropdown-toggle"
+                    type="button"
+                    data-bs-toggle="dropdown"
+                  >
+                    <i class="bi bi-three-dots"></i>
+                  </button>
+                  <ul class="dropdown-menu">
+                    <li>
+                      <a
+                        class="dropdown-item"
+                        href="#"
+                        onclick="editCategory(5)"
+                        ><i class="bi bi-pencil"></i> Edit</a
+                      >
+                    </li>
+                    <li>
+                      <a
+                        class="dropdown-item text-danger"
+                        href="#"
+                        onclick="deleteCategory(5)"
+                        ><i class="bi bi-trash"></i> Delete</a
+                      >
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <div class="d-flex justify-content-between align-items-center">
+                <span class="badge bg-secondary fs-6">12 items</span>
+                <a
+                  href="items.html?category=tools"
+                  class="btn btn-sm btn-outline-secondary"
+                  >View Items</a
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Add Category Modal -->
+    <div class="modal fade" id="addCategoryModal" tabindex="-1">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Add New Category</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form id="addCategoryForm">
+              <div class="mb-3">
+                <label for="categoryName" class="form-label"
+                  >Category Name *</label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  id="categoryName"
+                  name="name"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label for="categoryDescription" class="form-label"
+                  >Description</label
+                >
+                <textarea
+                  class="form-control"
+                  id="categoryDescription"
+                  name="description"
+                  rows="3"
+                  placeholder="Optional description..."
+                ></textarea>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Cancel
+            </button>
+            <button
+              type="button"
+              class="btn btn-primary"
+              onclick="addCategory()"
+            >
+              Add Category
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Edit Category Modal -->
+    <div class="modal fade" id="editCategoryModal" tabindex="-1">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Edit Category</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form id="editCategoryForm">
+              <div class="mb-3">
+                <label for="editCategoryName" class="form-label"
+                  >Category Name *</label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  id="editCategoryName"
+                  name="name"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label for="editCategoryDescription" class="form-label"
+                  >Description</label
+                >
+                <textarea
+                  class="form-control"
+                  id="editCategoryDescription"
+                  name="description"
+                  rows="3"
+                ></textarea>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Cancel
+            </button>
+            <button
+              type="button"
+              class="btn btn-success"
+              onclick="updateCategory()"
+            >
+              Update Category
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div class="modal fade" id="deleteCategoryModal" tabindex="-1">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Confirm Delete</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <p>Are you sure you want to delete this category?</p>
+            <div class="alert alert-warning">
+              <i class="bi bi-exclamation-triangle"></i>
+              <strong>Warning:</strong> All items in this category will be moved
+              to "Uncategorized".
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Cancel
+            </button>
+            <button
+              type="button"
+              class="btn btn-danger"
+              onclick="confirmDeleteCategory()"
+            >
+              Delete Category
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      let currentCategoryId = null;
+
+      function addCategory() {
+        const form = document.getElementById("addCategoryForm");
+        const formData = new FormData(form);
+
+        // Add your AJAX call here
+        console.log("Adding category:", Object.fromEntries(formData));
+
+        // Close modal and reset form
+        bootstrap.Modal.getInstance(
+          document.getElementById("addCategoryModal")
+        ).hide();
+        form.reset();
+      }
+
+      function editCategory(categoryId) {
+        currentCategoryId = categoryId;
+
+        // Load category data (in real app, make AJAX call)
+        const categoryData = {
+          1: {
+            name: "Electronics",
+            description: "Electronic devices and accessories",
+          },
+          2: {
+            name: "Furniture",
+            description: "Office and home furniture items",
+          },
+          3: {
+            name: "Stationery",
+            description: "Office supplies and stationery items",
+          },
+          4: { name: "Food", description: "Food items and beverages" },
+          5: { name: "Tools", description: "Hardware tools and equipment" },
+        };
+
+        const category = categoryData[categoryId];
+        document.getElementById("editCategoryName").value = category.name;
+        document.getElementById("editCategoryDescription").value =
+          category.description;
+
+        const modal = new bootstrap.Modal(
+          document.getElementById("editCategoryModal")
+        );
+        modal.show();
+      }
+
+      function updateCategory() {
+        const form = document.getElementById("editCategoryForm");
+        const formData = new FormData(form);
+
+        // Add your AJAX call here
+        console.log(
+          "Updating category:",
+          currentCategoryId,
+          Object.fromEntries(formData)
+        );
+
+        // Close modal
+        bootstrap.Modal.getInstance(
+          document.getElementById("editCategoryModal")
+        ).hide();
+      }
+
+      function deleteCategory(categoryId) {
+        currentCategoryId = categoryId;
+        const modal = new bootstrap.Modal(
+          document.getElementById("deleteCategoryModal")
+        );
+        modal.show();
+      }
+
+      function confirmDeleteCategory() {
+        // Add your AJAX call here
+        console.log("Deleting category:", currentCategoryId);
+
+        // Close modal
+        bootstrap.Modal.getInstance(
+          document.getElementById("deleteCategoryModal")
+        ).hide();
+      }
+    </script>
+  </body>
+</html>
