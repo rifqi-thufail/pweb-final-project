@@ -37,7 +37,7 @@
                                 <tr>
                                     <td class="fw-bold">Category:</td>
                                     <td>
-                                        <span class="badge bg-{{ $item->category_color ?? 'secondary' }}">
+                                        <span class="badge bg-primary">
                                             {{ $item->category_name }}
                                         </span>
                                     </td>
@@ -68,7 +68,7 @@
                             <table class="table table-borderless">
                                 <tr>
                                     <td class="fw-bold">Added Date:</td>
-                                    <td>{{ $item->added_date->format('F j, Y') }}</td>
+                                    <td>{{ \Carbon\Carbon::parse($item->added_date)->format('F j, Y') }}</td>
                                 </tr>
                                 <tr>
                                     <td class="fw-bold">Added By:</td>
@@ -76,7 +76,7 @@
                                 </tr>
                                 <tr>
                                     <td class="fw-bold">Last Updated:</td>
-                                    <td>{{ $item->updated_at->format('F j, Y') }}</td>
+                                    <td>{{ \Carbon\Carbon::parse($item->updated_at)->format('F j, Y') }}</td>
                                 </tr>
                                 <tr>
                                     <td class="fw-bold">Item ID:</td>

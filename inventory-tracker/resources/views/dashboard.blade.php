@@ -117,7 +117,7 @@
                                     <h6 class="mb-1">{{ $item->name }}</h6>
                                     <small class="text-muted">{{ $item->category_name }} • Qty: {{ $item->quantity }}</small>
                                 </div>
-                                <small class="text-muted">{{ $item->added_date->diffForHumans() }}</small>
+                                <small class="text-muted">{{ \Carbon\Carbon::parse($item->added_date)->diffForHumans() }}</small>
                             </div>
                         @empty
                             <div class="list-group-item">
@@ -177,9 +177,9 @@
     new Chart(categoryCtx, {
         type: 'doughnut',
         data: {
-            labels: {!! json_encode($categoryChart['labels']) !!},
+            labels: {!! json_encode($categoryChart['labels'] ?? ['No Data']) !!},
             datasets: [{
-                data: {!! json_encode($categoryChart['data']) !!},
+                data: {!! json_encode($categoryChart['data'] ?? [0]) !!},
                 backgroundColor: [
                     '#0d6efd',
                     '#198754', 
@@ -207,10 +207,10 @@
     new Chart(stockCtx, {
         type: 'bar',
         data: {
-            labels: {!! json_encode($stockChart['labels']) !!},
+            labels: {!! json_encode($stockChart['labels'] ?? ['No Data']) !!},
             datasets: [{
                 label: 'Stock Quantity',
-                data: {!! json_encode($stockChart['data']) !!},
+                data: {!! json_encode($stockChart['data'] ?? [0]) !!},
                 backgroundColor: '#0d6efd'
             }]
         },

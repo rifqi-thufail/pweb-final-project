@@ -23,8 +23,8 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-between align-items-start mb-3">
                             <div>
-                                <h5 class="card-title text-{{ $category->color ?? 'primary' }}">
-                                    <i class="bi bi-{{ $category->icon ?? 'tag' }}"></i> {{ $category->name }}
+                                <h5 class="card-title text-primary">
+                                    <i class="bi bi-tag"></i> {{ $category->name }}
                                 </h5>
                                 <p class="card-text text-muted">
                                     {{ $category->description ?: 'No description provided' }}
@@ -37,7 +37,7 @@
                                 </button>
                                 <ul class="dropdown-menu">
                                     <li>
-                                        <a class="dropdown-item" href="#" onclick="editCategory({{ $category->id }}, '{{ $category->name }}', '{{ $category->description }}', '{{ $category->color }}', '{{ $category->icon }}')">
+                                        <a class="dropdown-item" href="#" onclick="editCategory({{ $category->id }})">
                                             <i class="bi bi-pencil"></i> Edit
                                         </a>
                                     </li>
@@ -51,9 +51,9 @@
                             </div>
                         </div>
                         <div class="d-flex justify-content-between align-items-center">
-                            <span class="badge bg-{{ $category->color ?? 'primary' }} fs-6">{{ $category->items_count }} items</span>
+                            <span class="badge bg-primary fs-6">{{ $category->items_count }} items</span>
                             <a href="{{ route('items.index', ['category' => $category->id]) }}" 
-                               class="btn btn-sm btn-outline-{{ $category->color ?? 'primary' }}">
+                               class="btn btn-sm btn-outline-primary">
                                 View Items
                             </a>
                         </div>
@@ -98,8 +98,8 @@
                                     @foreach($categories as $category)
                                         <tr>
                                             <td>
-                                                <span class="badge bg-{{ $category->color ?? 'primary' }}">
-                                                    <i class="bi bi-{{ $category->icon ?? 'tag' }}"></i> {{ $category->name }}
+                                                <span class="badge bg-primary">
+                                                    <i class="bi bi-tag"></i> {{ $category->name }}
                                                 </span>
                                             </td>
                                             <td>{{ $category->items_count }}</td>
@@ -112,7 +112,7 @@
                                                         <i class="bi bi-eye"></i>
                                                     </a>
                                                     <button class="btn btn-outline-warning" title="Edit"
-                                                            onclick="editCategory({{ $category->id }}, '{{ $category->name }}', '{{ $category->description }}', '{{ $category->color }}', '{{ $category->icon }}')">
+                                                            onclick="editCategory({{ $category->id }})">
                                                         <i class="bi bi-pencil"></i>
                                                     </button>
                                                     <button class="btn btn-outline-danger" title="Delete"
@@ -283,23 +283,30 @@
 
 @push('scripts')
 <script>
-    function editCategory(id, name, description, color, icon) {
-        document.getElementById('editCategoryName').value = name;
-        document.getElementById('editCategoryDescription').value = description;
-        document.getElementById('editCategoryColor').value = color;
-        document.getElementById('editCategoryIcon').value = icon;
-        document.getElementById('editCategoryForm').action = `/categories/${id}`;
-        
-        const modal = new bootstrap.Modal(document.getElementById('editCategoryModal'));
-        modal.show();
+    function editCategory(categoryId) {
+        // Fetch category data and populate edit modal
+        fetch(`/categories/${categoryId}`)
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('edit_name').value = data.name;
+                document.getElementById('edit_description').value = data.description || '';
+                document.getElementById('editCategoryForm').action = `/categories/${categoryId}`;
+                
+                const editModal = new bootstrap.Modal(document.getElementById('editCategoryModal'));
+                editModal.show();
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error loading category data');
+            });
     }
 
-    function deleteCategory(id, name) {
-        document.getElementById('deleteCategoryName').textContent = name;
-        document.getElementById('deleteCategoryForm').action = `/categories/${id}`;
+    function deleteCategory(categoryId, categoryName) {
+        document.getElementById('deleteCategoryName').textContent = categoryName;
+        document.getElementById('deleteCategoryForm').action = `/categories/${categoryId}`;
         
-        const modal = new bootstrap.Modal(document.getElementById('deleteCategoryModal'));
-        modal.show();
+        const deleteModal = new bootstrap.Modal(document.getElementById('deleteCategoryModal'));
+        deleteModal.show();
     }
 </script>
 @endpush

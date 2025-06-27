@@ -73,7 +73,7 @@
                                     </div>
                                 </td>
                                 <td>
-                                    <span class="badge bg-{{ $item->category_color ?? 'secondary' }}">
+                                    <span class="badge bg-primary">
                                         {{ $item->category_name }}
                                     </span>
                                 </td>
@@ -91,7 +91,7 @@
                                         <span class="badge bg-success">In Stock</span>
                                     @endif
                                 </td>
-                                <td>{{ $item->added_date->format('Y-m-d') }}</td>
+                                <td>{{ \Carbon\Carbon::parse($item->added_date)->format('Y-m-d') }}</td>
                                 <td>
                                     <div class="btn-group btn-group-sm">
                                         <a href="{{ route('items.show', $item->id) }}" class="btn btn-outline-info" title="View">
@@ -126,8 +126,8 @@
 
             <!-- Pagination -->
             @if($items->hasPages())
-                <div class="d-flex justify-content-center">
-                    {{ $items->appends(request()->query())->links() }}
+                <div class="mt-4">
+                    {{ $items->appends(request()->query())->links('custom-pagination') }}
                 </div>
             @endif
         </div>
@@ -157,6 +157,38 @@
     </div>
 </div>
 @endsection
+
+@push('styles')
+<style>
+    .pagination .page-link {
+        border-radius: 8px;
+        margin: 0 2px;
+        border: 1px solid #dee2e6;
+        color: #6c757d;
+        transition: all 0.2s ease-in-out;
+    }
+    
+    .pagination .page-link:hover {
+        background-color: #e9ecef;
+        border-color: #adb5bd;
+        color: #495057;
+        transform: translateY(-1px);
+    }
+    
+    .pagination .page-item.active .page-link {
+        background-color: #0d6efd;
+        border-color: #0d6efd;
+        color: white;
+        box-shadow: 0 2px 4px rgba(13, 110, 253, 0.25);
+    }
+    
+    .pagination .page-item.disabled .page-link {
+        background-color: #f8f9fa;
+        border-color: #dee2e6;
+        color: #6c757d;
+    }
+</style>
+@endpush
 
 @push('scripts')
 <script>

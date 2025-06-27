@@ -61,7 +61,7 @@
                                     <label for="added_date" class="form-label">Added Date *</label>
                                     <input type="date" class="form-control @error('added_date') is-invalid @enderror" 
                                            id="added_date" name="added_date" 
-                                           value="{{ old('added_date', $item->added_date->format('Y-m-d')) }}" required>
+                                           value="{{ old('added_date', \Carbon\Carbon::parse($item->added_date)->format('Y-m-d')) }}" required>
                                     @error('added_date')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror

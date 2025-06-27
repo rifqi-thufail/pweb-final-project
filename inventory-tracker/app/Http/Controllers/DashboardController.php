@@ -62,15 +62,26 @@ class DashboardController extends Controller
             ->groupBy('categories.id', 'categories.name')
             ->get();
 
+        // Prepare chart data
+        $categoryChart = [
+            'labels' => $itemsByCategory->pluck('category_name')->toArray() ?: ['No Data'],
+            'data' => $itemsByCategory->pluck('count')->toArray() ?: [0]
+        ];
+
+        $stockChart = [
+            'labels' => $stockByCategory->pluck('category_name')->toArray() ?: ['No Data'],
+            'data' => $stockByCategory->pluck('total_stock')->toArray() ?: [0]
+        ];
+
         return view('dashboard', compact(
             'totalItems',
             'totalCategories', 
             'lowStockCount',
             'totalValue',
-            'itemsByCategory',
             'recentItems',
             'lowStockItems',
-            'stockByCategory'
+            'categoryChart',
+            'stockChart'
         ));
     }
 }

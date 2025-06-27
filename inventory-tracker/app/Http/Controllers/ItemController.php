@@ -42,8 +42,8 @@ class ItemController extends Controller
         }
 
         // Stock filter
-        if ($request->filled('stock_filter')) {
-            switch ($request->stock_filter) {
+        if ($request->filled('filter')) {
+            switch ($request->filter) {
                 case 'low_stock':
                     $query->where('items.quantity', '<=', 5);
                     break;

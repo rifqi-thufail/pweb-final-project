@@ -19,6 +19,6 @@ class TipsController extends Controller
      */
     public function index()
     {
-        return view('tips.index');
+        return view('tips');
     }
 }
