@@ -21,10 +21,15 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        // Get categories with item counts
+        // Get categories with item counts and statistics
         $categories = DB::table('categories')
             ->leftJoin('items', 'categories.id', '=', 'items.category_id')
-            ->select('categories.*', DB::raw('COUNT(items.id) as items_count'))
+            ->select(
+                'categories.*', 
+                DB::raw('COUNT(items.id) as items_count'),
+                DB::raw('COALESCE(SUM(items.quantity), 0) as total_quantity'),
+                DB::raw('COUNT(CASE WHEN items.quantity <= 5 AND items.quantity > 0 THEN 1 END) as low_stock_count')
+            )
             ->groupBy('categories.id', 'categories.name', 'categories.description', 'categories.created_at', 'categories.updated_at')
             ->orderBy('categories.name')
             ->get();

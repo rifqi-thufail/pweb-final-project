@@ -102,9 +102,31 @@
                                                     <i class="bi bi-tag"></i> {{ $category->name }}
                                                 </span>
                                             </td>
-                                            <td>{{ $category->items_count }}</td>
-                                            <td>{{ $category->total_quantity ?? 0 }}</td>
-                                            <td>{{ $category->low_stock_count ?? 0 }}</td>
+                                            <td>
+                                                <span class="fw-bold">{{ $category->items_count }}</span>
+                                                @if($category->items_count == 0)
+                                                    <small class="text-muted d-block">No items</small>
+                                                @endif
+                                            </td>
+                                            <td>
+                                                <span class="fw-bold text-primary">{{ number_format($category->total_quantity) }}</span>
+                                                @if($category->total_quantity > 0)
+                                                    <small class="text-muted d-block">
+                                                        {{ number_format($category->total_quantity / ($category->items_count ?: 1), 1) }} avg per item
+                                                    </small>
+                                                @endif
+                                            </td>
+                                            <td>
+                                                @if($category->low_stock_count > 0)
+                                                    <span class="badge bg-warning text-dark">
+                                                        <i class="bi bi-exclamation-triangle"></i> {{ $category->low_stock_count }}
+                                                    </span>
+                                                @else
+                                                    <span class="text-success">
+                                                        <i class="bi bi-check-circle"></i> None
+                                                    </span>
+                                                @endif
+                                            </td>
                                             <td>
                                                 <div class="btn-group btn-group-sm">
                                                     <a href="{{ route('items.index', ['category' => $category->id]) }}" 
@@ -288,12 +310,16 @@
         fetch(`/categories/${categoryId}`)
             .then(response => response.json())
             .then(data => {
-                document.getElementById('edit_name').value = data.name;
-                document.getElementById('edit_description').value = data.description || '';
-                document.getElementById('editCategoryForm').action = `/categories/${categoryId}`;
-                
-                const editModal = new bootstrap.Modal(document.getElementById('editCategoryModal'));
-                editModal.show();
+                if (data.category) {
+                    document.getElementById('editCategoryName').value = data.category.name;
+                    document.getElementById('editCategoryDescription').value = data.category.description || '';
+                    document.getElementById('editCategoryForm').action = `/categories/${categoryId}`;
+                    
+                    const editModal = new bootstrap.Modal(document.getElementById('editCategoryModal'));
+                    editModal.show();
+                } else {
+                    alert('Error loading category data');
+                }
             })
             .catch(error => {
                 console.error('Error:', error);
