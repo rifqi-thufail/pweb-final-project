@@ -91,10 +91,18 @@ class CategoryController extends Controller
         $category = DB::table('categories')->where('id', $id)->first();
         
         if (!$category) {
+            if (request()->ajax()) {
+                return response()->json(['error' => 'Category not found'], 404);
+            }
             abort(404);
         }
 
-        // Get items in this category
+        // If this is an AJAX request, return JSON data
+        if (request()->ajax()) {
+            return response()->json(['category' => $category]);
+        }
+
+        // Get items in this category for the regular view
         $items = DB::table('items')
             ->leftJoin('users', 'items.user_id', '=', 'users.id')
             ->select('items.*', 'users.name as user_name')

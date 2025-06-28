@@ -172,39 +172,7 @@
                     </div>
                     <div class="mb-3">
                         <label for="categoryDescription" class="form-label">Description</label>
-                        <textarea class="form-control" id="categoryDescription" name="description" rows="3"></textarea>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="mb-3">
-                                <label for="categoryColor" class="form-label">Color</label>
-                                <select class="form-select" id="categoryColor" name="color">
-                                    <option value="primary">Blue (Primary)</option>
-                                    <option value="success">Green (Success)</option>
-                                    <option value="warning">Yellow (Warning)</option>
-                                    <option value="danger">Red (Danger)</option>
-                                    <option value="info">Cyan (Info)</option>
-                                    <option value="secondary">Gray (Secondary)</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="mb-3">
-                                <label for="categoryIcon" class="form-label">Icon</label>
-                                <select class="form-select" id="categoryIcon" name="icon">
-                                    <option value="laptop">Laptop</option>
-                                    <option value="house">House</option>
-                                    <option value="pencil">Pencil</option>
-                                    <option value="cup-hot">Cup Hot</option>
-                                    <option value="gear">Gear</option>
-                                    <option value="book">Book</option>
-                                    <option value="wrench">Wrench</option>
-                                    <option value="car">Car</option>
-                                    <option value="heart">Heart</option>
-                                    <option value="star">Star</option>
-                                </select>
-                            </div>
-                        </div>
+                        <textarea class="form-control" id="categoryDescription" name="description" rows="3" placeholder="Optional description for this category"></textarea>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -234,39 +202,7 @@
                     </div>
                     <div class="mb-3">
                         <label for="editCategoryDescription" class="form-label">Description</label>
-                        <textarea class="form-control" id="editCategoryDescription" name="description" rows="3"></textarea>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="mb-3">
-                                <label for="editCategoryColor" class="form-label">Color</label>
-                                <select class="form-select" id="editCategoryColor" name="color">
-                                    <option value="primary">Blue (Primary)</option>
-                                    <option value="success">Green (Success)</option>
-                                    <option value="warning">Yellow (Warning)</option>
-                                    <option value="danger">Red (Danger)</option>
-                                    <option value="info">Cyan (Info)</option>
-                                    <option value="secondary">Gray (Secondary)</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="mb-3">
-                                <label for="editCategoryIcon" class="form-label">Icon</label>
-                                <select class="form-select" id="editCategoryIcon" name="icon">
-                                    <option value="laptop">Laptop</option>
-                                    <option value="house">House</option>
-                                    <option value="pencil">Pencil</option>
-                                    <option value="cup-hot">Cup Hot</option>
-                                    <option value="gear">Gear</option>
-                                    <option value="book">Book</option>
-                                    <option value="wrench">Wrench</option>
-                                    <option value="car">Car</option>
-                                    <option value="heart">Heart</option>
-                                    <option value="star">Star</option>
-                                </select>
-                            </div>
-                        </div>
+                        <textarea class="form-control" id="editCategoryDescription" name="description" rows="3" placeholder="Optional description for this category"></textarea>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -307,24 +243,43 @@
 <script>
     function editCategory(categoryId) {
         // Fetch category data and populate edit modal
-        fetch(`/categories/${categoryId}`)
-            .then(response => response.json())
-            .then(data => {
-                if (data.category) {
-                    document.getElementById('editCategoryName').value = data.category.name;
-                    document.getElementById('editCategoryDescription').value = data.category.description || '';
-                    document.getElementById('editCategoryForm').action = `/categories/${categoryId}`;
-                    
-                    const editModal = new bootstrap.Modal(document.getElementById('editCategoryModal'));
-                    editModal.show();
-                } else {
-                    alert('Error loading category data');
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('Error loading category data');
-            });
+        fetch(`/categories/${categoryId}`, {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || ''
+            }
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log('Response data:', data); // Debug log
+            if (data.category) {
+                // Populate the form fields with the category data
+                document.getElementById('editCategoryName').value = data.category.name;
+                document.getElementById('editCategoryDescription').value = data.category.description || '';
+                
+                // Set the form action to update this specific category
+                document.getElementById('editCategoryForm').action = `/categories/${categoryId}`;
+                
+                // Show the modal
+                const editModal = new bootstrap.Modal(document.getElementById('editCategoryModal'));
+                editModal.show();
+            } else {
+                console.error('No category data in response:', data);
+                alert('Error loading category data: Invalid response format');
+            }
+        })
+        .catch(error => {
+            console.error('Fetch error:', error);
+            alert(`Error loading category data: ${error.message}`);
+        });
     }
 
     function deleteCategory(categoryId, categoryName) {
