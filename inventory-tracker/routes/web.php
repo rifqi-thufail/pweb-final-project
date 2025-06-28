@@ -20,10 +20,10 @@ use App\Http\Controllers\TipsController;
 // Authentication Routes
 Auth::routes();
 
-// Redirect root to dashboard (only for authenticated users)
+// Root route - always show landing page
 Route::get('/', function () {
-    return redirect()->route('dashboard');
-})->middleware('auth');
+    return view('welcome');
+})->name('welcome');
 
 // Protected Routes (require authentication)
 Route::middleware(['auth'])->group(function () {
