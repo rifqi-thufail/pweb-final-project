@@ -53,6 +53,22 @@ class ItemController extends Controller
                 case 'in_stock':
                     $query->where('items.quantity', '>', 5);
                     break;
+                case 'expiring_soon':
+                    $query->whereNotNull('items.expiration_date')
+                          ->where('items.expiration_date', '>=', now()->toDateString())
+                          ->where('items.expiration_date', '<=', now()->addDays(7)->toDateString());
+                    break;
+                case 'expired':
+                    $query->whereNotNull('items.expiration_date')
+                          ->where('items.expiration_date', '<', now()->toDateString());
+                    break;
+                case 'expiring_this_week':
+                    $query->whereNotNull('items.expiration_date')
+                          ->whereBetween('items.expiration_date', [
+                              now()->startOfWeek()->toDateString(),
+                              now()->endOfWeek()->toDateString()
+                          ]);
+                    break;
             }
         }
 
@@ -84,6 +100,7 @@ class ItemController extends Controller
             'quantity' => 'required|integer|min:0',
             'category_id' => 'required|exists:categories,id',
             'added_date' => 'required|date',
+            'expiration_date' => 'nullable|date|after:today',
         ]);
 
         if ($validator->fails()) {
@@ -99,6 +116,7 @@ class ItemController extends Controller
             'category_id' => $request->category_id,
             'user_id' => Auth::id(),
             'added_date' => $request->added_date,
+            'expiration_date' => $request->expiration_date,
             'created_at' => now(),
             'updated_at' => now(),
         ]);
@@ -153,6 +171,7 @@ class ItemController extends Controller
             'quantity' => 'required|integer|min:0',
             'category_id' => 'required|exists:categories,id',
             'added_date' => 'required|date',
+            'expiration_date' => 'nullable|date|after:today',
         ]);
 
         if ($validator->fails()) {
@@ -169,6 +188,7 @@ class ItemController extends Controller
                 'quantity' => $request->quantity,
                 'category_id' => $request->category_id,
                 'added_date' => $request->added_date,
+                'expiration_date' => $request->expiration_date,
                 'updated_at' => now(),
             ]);
 
@@ -193,6 +213,47 @@ class ItemController extends Controller
 
         return redirect()->route('items.index')
             ->with('success', 'Item deleted successfully.');
+    }
+
+    /**
+     * Get items expiring within specified days.
+     */
+    public function getExpiringItems($days = 7)
+    {
+        return DB::table('items')
+            ->leftJoin('categories', 'items.category_id', '=', 'categories.id')
+            ->select('items.*', 'categories.name as category_name')
+            ->whereNotNull('items.expiration_date')
+            ->where('items.expiration_date', '>=', now()->toDateString())
+            ->where('items.expiration_date', '<=', now()->addDays($days)->toDateString())
+            ->orderBy('items.expiration_date', 'asc')
+            ->get();
+    }
+
+    /**
+     * Show items expiring soon.
+     */
+    public function expiring(Request $request)
+    {
+        $days = $request->get('days', 7);
+        $items = $this->getExpiringItems($days);
+        
+        return view('items.expiring', compact('items', 'days'));
+    }
+
+    /**
+     * AJAX endpoint for expiring items count.
+     */
+    public function expiringCount(Request $request)
+    {
+        $days = $request->get('days', 7);
+        $count = DB::table('items')
+            ->whereNotNull('expiration_date')
+            ->where('expiration_date', '>=', now()->toDateString())
+            ->where('expiration_date', '<=', now()->addDays($days)->toDateString())
+            ->count();
+            
+        return response()->json(['count' => $count]);
     }
 
     /**

@@ -17,14 +17,14 @@
 
     <!-- Search and Filter -->
     <div class="row mb-4">
-        <div class="col-md-6">
+        <div class="col-md-4">
             <div class="input-group">
                 <span class="input-group-text"><i class="bi bi-search"></i></span>
                 <input type="text" class="form-control" placeholder="Search items..." 
                        id="searchInput" value="{{ request('search') }}">
             </div>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-2">
             <select class="form-select" id="categoryFilter">
                 <option value="">All Categories</option>
                 @foreach($categories as $category)
@@ -36,10 +36,18 @@
         </div>
         <div class="col-md-3">
             <select class="form-select" id="stockFilter">
-                <option value="">All Stock Levels</option>
+                <option value="">Stock Levels</option>
                 <option value="in_stock" {{ request('filter') == 'in_stock' ? 'selected' : '' }}>In Stock</option>
                 <option value="low_stock" {{ request('filter') == 'low_stock' ? 'selected' : '' }}>Low Stock</option>
                 <option value="out_of_stock" {{ request('filter') == 'out_of_stock' ? 'selected' : '' }}>Out of Stock</option>
+            </select>
+        </div>
+        <div class="col-md-3">
+            <select class="form-select" id="expirationFilter">
+                <option value="">Expiration Status</option>
+                <option value="expiring_soon" {{ request('filter') == 'expiring_soon' ? 'selected' : '' }}>Expiring Soon (7 days)</option>
+                <option value="expired" {{ request('filter') == 'expired' ? 'selected' : '' }}>Expired</option>
+                <option value="expiring_this_week" {{ request('filter') == 'expiring_this_week' ? 'selected' : '' }}>Expiring This Week</option>
             </select>
         </div>
     </div>
@@ -56,6 +64,7 @@
                             <th>Quantity</th>
                             <th>Status</th>
                             <th>Added Date</th>
+                            <th>Expiration</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -93,6 +102,36 @@
                                 </td>
                                 <td>{{ \Carbon\Carbon::parse($item->added_date)->format('Y-m-d') }}</td>
                                 <td>
+                                    @if($item->expiration_date)
+                                        @php
+                                            $expirationDate = \Carbon\Carbon::parse($item->expiration_date);
+                                            $today = \Carbon\Carbon::today();
+                                            $daysUntilExpiry = $today->diffInDays($expirationDate, false);
+                                        @endphp
+                                        
+                                        <div class="d-flex align-items-center">
+                                            <span class="me-2">{{ $expirationDate->format('Y-m-d') }}</span>
+                                            @if($daysUntilExpiry < 0)
+                                                <span class="badge bg-danger" title="Expired {{ abs($daysUntilExpiry) }} days ago">
+                                                    <i class="bi bi-exclamation-triangle"></i> Expired
+                                                </span>
+                                            @elseif($daysUntilExpiry <= 7)
+                                                <span class="badge bg-warning" title="Expires in {{ $daysUntilExpiry }} days">
+                                                    <i class="bi bi-clock"></i> {{ $daysUntilExpiry }}d
+                                                </span>
+                                            @else
+                                                <span class="badge bg-success" title="Expires in {{ $daysUntilExpiry }} days">
+                                                    <i class="bi bi-check-circle"></i> {{ $daysUntilExpiry }}d
+                                                </span>
+                                            @endif
+                                        </div>
+                                    @else
+                                        <span class="text-muted">
+                                            <i class="bi bi-dash"></i> No expiration
+                                        </span>
+                                    @endif
+                                </td>
+                                <td>
                                     <div class="btn-group btn-group-sm">
                                         <a href="{{ route('items.show', $item->id) }}" class="btn btn-outline-info" title="View">
                                             <i class="bi bi-eye"></i>
@@ -109,7 +148,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="6" class="text-center py-4">
+                                <td colspan="7" class="text-center py-4">
                                     <div class="text-muted">
                                         <i class="bi bi-box fs-1 d-block mb-2"></i>
                                         <p class="mb-0">No items found</p>
@@ -206,19 +245,39 @@
         }, 500)();
     });
 
-    // Filter functionality
+    // Filter functionality with mutual exclusion
     document.getElementById('categoryFilter').addEventListener('change', filterItems);
-    document.getElementById('stockFilter').addEventListener('change', filterItems);
+    document.getElementById('stockFilter').addEventListener('change', function() {
+        // Clear expiration filter when stock filter is selected
+        if (this.value) {
+            document.getElementById('expirationFilter').value = '';
+        }
+        filterItems();
+    });
+    document.getElementById('expirationFilter').addEventListener('change', function() {
+        // Clear stock filter when expiration filter is selected
+        if (this.value) {
+            document.getElementById('stockFilter').value = '';
+        }
+        filterItems();
+    });
 
     function filterItems() {
         const search = document.getElementById('searchInput').value;
         const category = document.getElementById('categoryFilter').value;
         const stock = document.getElementById('stockFilter').value;
+        const expiration = document.getElementById('expirationFilter').value;
         
         const params = new URLSearchParams();
         if (search) params.append('search', search);
         if (category) params.append('category', category);
-        if (stock) params.append('filter', stock);
+        
+        // Handle both stock and expiration filters (mutually exclusive)
+        if (stock) {
+            params.append('filter', stock);
+        } else if (expiration) {
+            params.append('filter', expiration);
+        }
         
         const url = new URL(window.location.href);
         url.search = params.toString();

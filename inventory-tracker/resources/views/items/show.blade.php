@@ -71,6 +71,39 @@
                                     <td>{{ \Carbon\Carbon::parse($item->added_date)->format('F j, Y') }}</td>
                                 </tr>
                                 <tr>
+                                    <td class="fw-bold">Expiration Date:</td>
+                                    <td>
+                                        @if($item->expiration_date)
+                                            @php
+                                                $expirationDate = \Carbon\Carbon::parse($item->expiration_date);
+                                                $today = \Carbon\Carbon::today();
+                                                $daysUntilExpiry = $today->diffInDays($expirationDate, false);
+                                            @endphp
+                                            
+                                            <div class="d-flex align-items-center">
+                                                <span class="me-2">{{ $expirationDate->format('F j, Y') }}</span>
+                                                @if($daysUntilExpiry < 0)
+                                                    <span class="badge bg-danger">
+                                                        <i class="bi bi-exclamation-triangle"></i> Expired {{ abs($daysUntilExpiry) }} days ago
+                                                    </span>
+                                                @elseif($daysUntilExpiry <= 7)
+                                                    <span class="badge bg-warning">
+                                                        <i class="bi bi-clock"></i> Expires in {{ $daysUntilExpiry }} days
+                                                    </span>
+                                                @else
+                                                    <span class="badge bg-success">
+                                                        <i class="bi bi-check-circle"></i> Expires in {{ $daysUntilExpiry }} days
+                                                    </span>
+                                                @endif
+                                            </div>
+                                        @else
+                                            <span class="text-muted">
+                                                <i class="bi bi-dash"></i> No expiration date
+                                            </span>
+                                        @endif
+                                    </td>
+                                </tr>
+                                <tr>
                                     <td class="fw-bold">Added By:</td>
                                     <td>{{ Auth::user()->name }}</td>
                                 </tr>

@@ -16,61 +16,91 @@
 
     <!-- Summary Cards -->
     <div class="row mb-4">
-        <div class="col-md-3">
+        <div class="col-md-2">
             <div class="card text-white bg-primary">
                 <div class="card-body">
                     <div class="d-flex justify-content-between">
                         <div>
-                            <h5 class="card-title">Total Items</h5>
-                            <h2 class="mb-0">{{ $totalItems }}</h2>
+                            <h6 class="card-title">Total Items</h6>
+                            <h3 class="mb-0">{{ $totalItems }}</h3>
                         </div>
                         <div class="align-self-center">
-                            <i class="bi bi-box fs-1"></i>
+                            <i class="bi bi-box fs-2"></i>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-2">
             <div class="card text-white bg-success">
                 <div class="card-body">
                     <div class="d-flex justify-content-between">
                         <div>
-                            <h5 class="card-title">Categories</h5>
-                            <h2 class="mb-0">{{ $totalCategories }}</h2>
+                            <h6 class="card-title">Categories</h6>
+                            <h3 class="mb-0">{{ $totalCategories }}</h3>
                         </div>
                         <div class="align-self-center">
-                            <i class="bi bi-tags fs-1"></i>
+                            <i class="bi bi-tags fs-2"></i>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-2">
             <div class="card text-white bg-warning">
                 <div class="card-body">
                     <div class="d-flex justify-content-between">
                         <div>
-                            <h5 class="card-title">Low Stock</h5>
-                            <h2 class="mb-0">{{ $lowStockCount }}</h2>
+                            <h6 class="card-title">Low Stock</h6>
+                            <h3 class="mb-0">{{ $lowStockCount }}</h3>
                         </div>
                         <div class="align-self-center">
-                            <i class="bi bi-exclamation-triangle fs-1"></i>
+                            <i class="bi bi-exclamation-triangle fs-2"></i>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-2">
+            <div class="card text-white bg-orange" style="background-color: #fd7e14 !important;">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h6 class="card-title">Expiring Soon</h6>
+                            <h3 class="mb-0">{{ $expiringCount }}</h3>
+                        </div>
+                        <div class="align-self-center">
+                            <i class="bi bi-clock fs-2"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="card text-white bg-danger">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h6 class="card-title">Expired</h6>
+                            <h3 class="mb-0">{{ $expiredCount }}</h3>
+                        </div>
+                        <div class="align-self-center">
+                            <i class="bi bi-x-circle fs-2"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2">
             <div class="card text-white bg-info">
                 <div class="card-body">
                     <div class="d-flex justify-content-between">
                         <div>
-                            <h5 class="card-title">Total Value</h5>
-                            <h2 class="mb-0">${{ number_format($totalValue, 0) }}</h2>
+                            <h6 class="card-title">Total Value</h6>
+                            <h3 class="mb-0">${{ number_format($totalValue, 0) }}</h3>
                         </div>
                         <div class="align-self-center">
-                            <i class="bi bi-currency-dollar fs-1"></i>
+                            <i class="bi bi-currency-dollar fs-2"></i>
                         </div>
                     </div>
                 </div>
@@ -91,7 +121,7 @@
             </div>
         </div>
         <div class="col-md-6">
-            <div class="card">
+            <div class="card mb-4">
                 <div class="card-header">
                     <h5><i class="bi bi-bar-chart"></i> Stock Levels</h5>
                 </div>
@@ -99,6 +129,42 @@
                     <canvas id="stockChart" width="400" height="200"></canvas>
                 </div>
             </div>
+            <div class="card col">
+                <div class="card-header">
+                    <h5>
+                        <i class="bi bi-clock text-warning"></i> Expiring Items
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="list-group list-group-flush">
+                        @forelse($expiringItems as $item) 
+                            @php
+                                $expirationDate = \Carbon\Carbon::parse($item->expiration_date);
+                                $today = \Carbon\Carbon::today();
+                                $daysUntilExpiry = $today->diffInDays($expirationDate, false);
+                            @endphp
+                            <div class="list-group-item d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h6 class="mb-1">{{ $item->name }}</h6>
+                                    <small class="text-muted">{{ $item->category_name }} • {{ $expirationDate->format('M j') }}</small>
+                                </div>
+                                <span class="badge bg-{{ $daysUntilExpiry <= 1 ? 'danger' : ($daysUntilExpiry <= 3 ? 'warning' : 'info') }} rounded-pill">
+                                    {{ $daysUntilExpiry == 0 ? 'Today' : $daysUntilExpiry . 'd' }}
+                                </span>
+                            </div>
+                        @empty
+                            <div class="list-group-item">
+                                <p class="text-muted mb-0">No expiring items.</p>
+                            </div>
+                        @endforelse
+                    </div>
+                    <div class="text-center mt-3">
+                        <a href="{{ route('items.expiring') }}" class="btn btn-outline-warning btn-sm">
+                            View All Expiring
+                        </a>
+                    </div>
+                </div>
+            </div> 
         </div>
     </div>
 

@@ -46,7 +46,7 @@
                         </div>
 
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <div class="mb-3">
                                     <label for="quantity" class="form-label">Quantity *</label>
                                     <input type="number" class="form-control @error('quantity') is-invalid @enderror" 
@@ -56,7 +56,7 @@
                                     @enderror
                                 </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <div class="mb-3">
                                     <label for="added_date" class="form-label">Added Date *</label>
                                     <input type="date" class="form-control @error('added_date') is-invalid @enderror" 
@@ -65,6 +65,18 @@
                                     @error('added_date')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label for="expiration_date" class="form-label">Expiration Date</label>
+                                    <input type="date" class="form-control @error('expiration_date') is-invalid @enderror" 
+                                           id="expiration_date" name="expiration_date" 
+                                           value="{{ old('expiration_date', $item->expiration_date ? \Carbon\Carbon::parse($item->expiration_date)->format('Y-m-d') : '') }}">
+                                    @error('expiration_date')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                    <small class="form-text text-muted">Leave empty if item doesn't expire</small>
                                 </div>
                             </div>
                         </div>

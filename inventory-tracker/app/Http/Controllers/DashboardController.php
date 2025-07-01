@@ -28,6 +28,19 @@ class DashboardController extends Controller
         // Get low stock items (quantity <= 5)
         $lowStockCount = DB::table('items')->where('quantity', '<=', 5)->count();
         
+        // Get expiring items count (within 7 days)
+        $expiringCount = DB::table('items')
+            ->whereNotNull('expiration_date')
+            ->where('expiration_date', '>=', now()->toDateString())
+            ->where('expiration_date', '<=', now()->addDays(7)->toDateString())
+            ->count();
+        
+        // Get expired items count
+        $expiredCount = DB::table('items')
+            ->whereNotNull('expiration_date')
+            ->where('expiration_date', '<', now()->toDateString())
+            ->count();
+        
         // Get total value (if you want to add price field later)
         $totalValue = 0; // Placeholder for now
         
@@ -55,6 +68,17 @@ class DashboardController extends Controller
             ->limit(5)
             ->get();
         
+        // Get expiring items for alerts (within 7 days)
+        $expiringItems = DB::table('items')
+            ->leftJoin('categories', 'items.category_id', '=', 'categories.id')
+            ->select('items.*', 'categories.name as category_name')
+            ->whereNotNull('items.expiration_date')
+            ->where('items.expiration_date', '>=', now()->toDateString())
+            ->where('items.expiration_date', '<=', now()->addDays(7)->toDateString())
+            ->orderBy('items.expiration_date', 'asc')
+            ->limit(5)
+            ->get();
+        
         // Get stock levels by category for chart
         $stockByCategory = DB::table('items')
             ->join('categories', 'items.category_id', '=', 'categories.id')
@@ -77,9 +101,12 @@ class DashboardController extends Controller
             'totalItems',
             'totalCategories', 
             'lowStockCount',
+            'expiringCount',
+            'expiredCount',
             'totalValue',
             'recentItems',
             'lowStockItems',
+            'expiringItems',
             'categoryChart',
             'stockChart'
         ));

@@ -34,6 +34,8 @@ Route::middleware(['auth'])->group(function () {
     // Items Routes
     Route::resource('items', ItemController::class);
     Route::patch('/items/{item}/quantity', [ItemController::class, 'updateQuantity'])->name('items.update-quantity');
+    Route::get('/items-expiring', [ItemController::class, 'expiring'])->name('items.expiring');
+    Route::get('/api/items/expiring-count', [ItemController::class, 'expiringCount'])->name('api.items.expiring-count');
 
     // Categories Routes
     Route::resource('categories', CategoryController::class);

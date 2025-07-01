@@ -45,6 +45,12 @@
                         </a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('items.expiring') ? 'active' : '' }}" href="{{ route('items.expiring') }}">
+                            <i class="bi bi-clock-history text-warning"></i> Expiring Items
+                            <span class="badge bg-warning text-dark ms-1" id="expiringBadge">0</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link {{ request()->routeIs('categories.*') ? 'active' : '' }}" href="{{ route('categories.index') }}">
                             <i class="bi bi-tags"></i> Categories
                         </a>
@@ -110,5 +116,29 @@
     
     <!-- Custom scripts -->
     @stack('scripts')
+
+    <!-- Auto-refresh expiring items count -->
+    @auth
+    <script>
+        function updateExpiringCount() {
+            fetch('{{ route("api.items.expiring-count") }}')
+                .then(response => response.json())
+                .then(data => {
+                    const badge = document.getElementById('expiringBadge');
+                    if (badge) {
+                        badge.textContent = data.count;
+                        badge.style.display = data.count > 0 ? 'inline' : 'none';
+                    }
+                })
+                .catch(error => console.log('Failed to fetch expiring count:', error));
+        }
+
+        // Update count on page load
+        document.addEventListener('DOMContentLoaded', updateExpiringCount);
+        
+        // Update count every 5 minutes
+        setInterval(updateExpiringCount, 300000);
+    </script>
+    @endauth
 </body>
 </html>

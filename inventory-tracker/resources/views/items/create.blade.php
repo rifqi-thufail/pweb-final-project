@@ -44,7 +44,7 @@
                         </div>
 
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <div class="mb-3">
                                     <label for="quantity" class="form-label">Quantity *</label>
                                     <input type="number" class="form-control @error('quantity') is-invalid @enderror" 
@@ -54,7 +54,7 @@
                                     @enderror
                                 </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <div class="mb-3">
                                     <label for="added_date" class="form-label">Added Date *</label>
                                     <input type="date" class="form-control @error('added_date') is-invalid @enderror" 
@@ -62,6 +62,17 @@
                                     @error('added_date')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label for="expiration_date" class="form-label">Expiration Date</label>
+                                    <input type="date" class="form-control @error('expiration_date') is-invalid @enderror" 
+                                           id="expiration_date" name="expiration_date" value="{{ old('expiration_date') }}">
+                                    @error('expiration_date')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                    <small class="form-text text-muted">Leave empty if item doesn't expire</small>
                                 </div>
                             </div>
                         </div>
@@ -99,12 +110,53 @@
 
 @push('scripts')
 <script>
-    // Set today's date as default if not already set
     document.addEventListener('DOMContentLoaded', function() {
+        // Set today's date as default if not already set
         const dateInput = document.getElementById('added_date');
         if (!dateInput.value) {
             dateInput.valueAsDate = new Date();
         }
+        
+        // Expiration date validation
+        const expirationInput = document.getElementById('expiration_date');
+        const form = document.querySelector('form');
+        
+        expirationInput.addEventListener('change', function() {
+            const selectedDate = new Date(this.value);
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            
+            if (this.value && selectedDate <= today) {
+                this.classList.add('is-invalid');
+                // Add error message if not exists
+                let errorDiv = this.parentNode.querySelector('.invalid-feedback');
+                if (!errorDiv) {
+                    errorDiv = document.createElement('div');
+                    errorDiv.className = 'invalid-feedback';
+                    this.parentNode.appendChild(errorDiv);
+                }
+                errorDiv.textContent = 'Expiration date must be in the future.';
+            } else {
+                this.classList.remove('is-invalid');
+                const errorDiv = this.parentNode.querySelector('.invalid-feedback');
+                if (errorDiv) {
+                    errorDiv.remove();
+                }
+            }
+        });
+        
+        // Form validation before submit
+        form.addEventListener('submit', function(e) {
+            const expirationDate = new Date(expirationInput.value);
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            
+            if (expirationInput.value && expirationDate <= today) {
+                e.preventDefault();
+                expirationInput.focus(); //making sure whenever the expired date is before todays date, it'll then prompt to edit the expiry date
+                alert('Please enter a valid expiration date in the future.');
+            }
+        });
     });
 </script>
 @endpush
