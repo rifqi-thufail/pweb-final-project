@@ -11,10 +11,7 @@
                 <div>
                     <a href="{{ route('items.index') }}" class="btn btn-secondary me-2">
                         <i class="bi bi-arrow-left"></i> Back to Items
-                    </a>
-                    <a href="{{ route('items.create') }}" class="btn btn-primary">
-                        <i class="bi bi-plus-circle"></i> Add New Item
-                    </a>
+                    </a> 
                 </div>
             </div>
         </div>

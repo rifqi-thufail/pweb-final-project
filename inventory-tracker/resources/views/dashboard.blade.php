@@ -6,6 +6,90 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 @endpush
 
+@push('styles')
+<style>
+    .dashboard-card {
+        cursor: pointer;
+        transition: all 0.3s ease;
+        border: none !important;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+    
+    .dashboard-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    }
+    
+    .dashboard-card:active {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+    
+    .dashboard-card .card-body {
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .dashboard-card .card-body::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+        transition: left 0.5s;
+    }
+    
+    .dashboard-card:hover .card-body::before {
+        left: 100%;
+    }
+    
+    .dashboard-card .card-title {
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+    }
+    
+    /* Add a subtle pulse animation for cards with alerts */
+    .dashboard-card.bg-warning:hover,
+    .dashboard-card.bg-danger:hover {
+        animation: pulse 1s infinite;
+    }
+    
+    .dashboard-card.bg-orange:hover {
+        animation: pulse 1s infinite;
+    }
+    
+    @keyframes pulse {
+        0% {
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+        50% {
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
+        }
+        100% {
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+    }
+    
+    /* Add a click indicator */
+    .dashboard-card .card-body::after {
+        content: '→';
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        font-size: 1.2rem;
+        font-weight: bold;
+    }
+    
+    .dashboard-card:hover .card-body::after {
+        opacity: 0.7;
+    }
+</style>
+@endpush
+
 @section('content')
 <div class="container my-4">
     <div class="row">
@@ -15,9 +99,9 @@
     </div>
 
     <!-- Summary Cards -->
-    <div class="row mb-4">
-        <div class="col-md-2">
-            <div class="card text-white bg-primary">
+    <div class="row mb-4 g-sm-4 ">
+        <div class="col-md-3">
+            <div class="card text-white bg-primary dashboard-card" onclick="window.location.href='{{ route('items.index') }}'">
                 <div class="card-body">
                     <div class="d-flex justify-content-between">
                         <div>
@@ -31,8 +115,8 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-2">
-            <div class="card text-white bg-success">
+        <div class="col-md-3">
+            <div class="card text-white bg-success dashboard-card" onclick="window.location.href='{{ route('categories.index') }}'">
                 <div class="card-body">
                     <div class="d-flex justify-content-between">
                         <div>
@@ -47,7 +131,7 @@
             </div>
         </div>
         <div class="col-md-2">
-            <div class="card text-white bg-warning">
+            <div class="card text-white bg-warning dashboard-card" onclick="window.location.href='{{ route('items.index', ['filter' => 'low_stock']) }}'">
                 <div class="card-body">
                     <div class="d-flex justify-content-between">
                         <div>
@@ -62,7 +146,7 @@
             </div>
         </div>
         <div class="col-md-2">
-            <div class="card text-white bg-orange" style="background-color: #fd7e14 !important;">
+            <div class="card text-white bg-orange dashboard-card" style="background-color: #fd7e14 !important;" onclick="window.location.href='{{ route('items.index', ['filter' => 'expiring_soon']) }}'">
                 <div class="card-body">
                     <div class="d-flex justify-content-between">
                         <div>
@@ -77,7 +161,7 @@
             </div>
         </div>
         <div class="col-md-2">
-            <div class="card text-white bg-danger">
+            <div class="card text-white bg-danger dashboard-card" onclick="window.location.href='{{ route('items.index', ['filter' => 'expired']) }}'">
                 <div class="card-body">
                     <div class="d-flex justify-content-between">
                         <div>
@@ -91,25 +175,10 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-2">
-            <div class="card text-white bg-info">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between">
-                        <div>
-                            <h6 class="card-title">Total Value</h6>
-                            <h3 class="mb-0">${{ number_format($totalValue, 0) }}</h3>
-                        </div>
-                        <div class="align-self-center">
-                            <i class="bi bi-currency-dollar fs-2"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 
     <!-- Charts Row -->
-    <div class="row mb-4">
+    <div class="row mb-4 g-sm-4">
         <div class="col-md-6">
             <div class="card">
                 <div class="card-header">
@@ -120,7 +189,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-6 d-flex flex-column">
             <div class="card mb-4">
                 <div class="card-header">
                     <h5><i class="bi bi-bar-chart"></i> Stock Levels</h5>
@@ -129,14 +198,14 @@
                     <canvas id="stockChart" width="400" height="200"></canvas>
                 </div>
             </div>
-            <div class="card col">
+            <div class="card flex-fill">
                 <div class="card-header">
                     <h5>
                         <i class="bi bi-clock text-warning"></i> Expiring Items
                     </h5>
                 </div>
-                <div class="card-body">
-                    <div class="list-group list-group-flush">
+                <div class="card-body d-flex flex-column">
+                    <div class="list-group list-group-flush flex-grow-1">
                         @forelse($expiringItems as $item) 
                             @php
                                 $expirationDate = \Carbon\Carbon::parse($item->expiration_date);
@@ -169,7 +238,7 @@
     </div>
 
     <!-- Recent Activity -->
-    <div class="row">
+    <div class="row g-sm-4">
         <div class="col-md-6">
             <div class="card">
                 <div class="card-header">
@@ -238,6 +307,7 @@
 
 @push('scripts')
 <script>
+
     // Category Chart
     const categoryCtx = document.getElementById('categoryChart').getContext('2d');
     new Chart(categoryCtx, {

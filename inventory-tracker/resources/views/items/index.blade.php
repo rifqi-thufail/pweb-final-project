@@ -8,9 +8,14 @@
         <div class="col-12">
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <h1><i class="bi bi-box"></i> Items</h1>
-                <a href="{{ route('items.create') }}" class="btn btn-primary">
-                    <i class="bi bi-plus-circle"></i> Add New Item
-                </a>
+                <div class="header-actions">
+                    <a href="{{ route('items.expiring') }}" class="btn btn-warning mx-2">
+                        <i class="bi bi-clock"></i> View Expiring Items
+                    </a>
+                    <a href="{{ route('items.create') }}" class="btn btn-primary">
+                        <i class="bi bi-plus-circle"></i> Add New Item
+                    </a>
+                </div>
             </div>
         </div>
     </div>
@@ -199,6 +204,29 @@
 
 @push('styles')
 <style>
+    /* Header button styling */
+    .header-actions {
+        display: flex;
+        gap: 0.75rem;
+        align-items: center;
+    }
+    
+    .header-actions .btn {
+        white-space: nowrap;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.375rem;
+        font-weight: 500;
+        padding: 0.5rem 1rem;
+        border-radius: 0.375rem;
+        transition: all 0.2s ease-in-out;
+    }
+    
+    .header-actions .btn:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    
     .pagination .page-link {
         border-radius: 8px;
         margin: 0 2px;
@@ -225,6 +253,26 @@
         background-color: #f8f9fa;
         border-color: #dee2e6;
         color: #6c757d;
+    }
+    
+    /* Responsive header adjustments */
+    @media (max-width: 576px) {
+        .header-actions {
+            flex-direction: column;
+            gap: 0.5rem;
+            width: 100%;
+        }
+        
+        .header-actions .btn {
+            width: 100%;
+            justify-content: center;
+        }
+        
+        .d-flex.justify-content-between.align-items-center {
+            flex-direction: column;
+            align-items: stretch !important;
+            gap: 1rem;
+        }
     }
 </style>
 @endpush

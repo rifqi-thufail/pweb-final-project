@@ -18,7 +18,7 @@
 </head>
 <body>
     <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary p-3">
         <div class="container">
             <a class="navbar-brand" href="{{ route('welcome') }}">
                 <i class="bi bi-box-seam"></i> Inventory Tracker
@@ -45,12 +45,6 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('items.expiring') ? 'active' : '' }}" href="{{ route('items.expiring') }}">
-                            <i class="bi bi-clock-history text-warning"></i> Expiring Items
-                            <span class="badge bg-warning text-dark ms-1" id="expiringBadge">0</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
                         <a class="nav-link {{ request()->routeIs('categories.*') ? 'active' : '' }}" href="{{ route('categories.index') }}">
                             <i class="bi bi-tags"></i> Categories
                         </a>
@@ -62,6 +56,12 @@
                     </li>
                 </ul>
                 <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('items.expiring') ? 'active' : '' }}" href="{{ route('items.expiring') }}">
+                            <i class="bi bi-clock-history text-warning"></i> Expiring Items
+                            <span class="badge bg-warning text-dark ms-1" id="expiringBadge">0</span>
+                        </a>
+                    </li>
                     @auth
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" 
